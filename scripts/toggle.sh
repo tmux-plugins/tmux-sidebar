@@ -6,10 +6,12 @@ source "$CURRENT_DIR/helpers.sh"
 source "$CURRENT_DIR/variables.sh"
 
 # script global vars
-ARGS="$1"       # example args format: "right,compact->tree | less"
+ARGS="$1"                    # example args format: "tree | less,right,20"
 PANE_CURRENT_PATH="$2"
-OPTIONS="$(echo "$ARGS" | sed "s/${OPTION_DELIMITER}.*//")"   # "right,compact"
-COMMAND="$(echo "$ARGS" | sed "s/.*${OPTION_DELIMITER}//")"   # "tree | less"
+COMMAND="$(echo "$ARGS"  | cut -d',' -f1)"   # "tree | less"
+POSITION="$(echo "$ARGS" | cut -d',' -f2)"   # "right"
+SIZE="$(echo "$ARGS"     | cut -d',' -f3)"   # "20"
+
 
 PANE_ID="$TMUX_PANE"
 
@@ -50,11 +52,15 @@ orientation_option() {
 }
 
 sidebar_left() {
-	[[ $OPTIONS =~ "left" ]]
+	[[ $POSITION =~ "left" ]]
 }
 
 no_focus() {
 	return 0
+}
+
+size_defined() {
+	[ -n $SIZE ]
 }
 
 create_sidebar() {
@@ -62,6 +68,9 @@ create_sidebar() {
 	register_new_sidebar "$new_sidebar_id"
 	if sidebar_left; then
 		tmux swap-pane -U
+	fi
+	if size_defined; then
+		tmux resize-pane -x "$SIZE"
 	fi
 	if no_focus; then
 		tmux last-pane

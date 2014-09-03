@@ -7,10 +7,10 @@ source "$CURRENT_DIR/scripts/variables.sh"
 
 set_default_key_binding_options() {
 	if key_not_defined "t"; then
-		set_tmux_option "${VAR_KEY_PREFIX}-t" "left,compact->tree | less"
+		set_tmux_option "${VAR_KEY_PREFIX}-t" "tree | less,left,50"
 	fi
 	if key_not_defined "T"; then
-		set_tmux_option "${VAR_KEY_PREFIX}-T" "right,compact->tree | less"
+		set_tmux_option "${VAR_KEY_PREFIX}-T" "tree | less,,50"
 	fi
 }
 
