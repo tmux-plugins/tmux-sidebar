@@ -3,6 +3,7 @@
 ### master
 - automatic sidebar opening for another sidebar type
 - sidebars can't have nested sidebars
+- show "custom tree" dir listing when `tree` command is not installed
 
 ### v0.1.0, Sep 03, 2014
 - started the project

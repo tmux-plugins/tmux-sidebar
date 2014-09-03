@@ -5,12 +5,27 @@ CURRENT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 source "$CURRENT_DIR/scripts/helpers.sh"
 source "$CURRENT_DIR/scripts/variables.sh"
 
+custom_tree_command="$CURRENT_DIR/scripts/custom_tree.sh"
+
+command_exists() {
+	local command="$1"
+	type "$command" >/dev/null 2>&1
+}
+
+tree_command() {
+	if command_exists "tree"; then
+		echo "tree"
+	else
+		echo "$custom_tree_command"
+	fi
+}
+
 set_default_key_binding_options() {
 	if key_not_defined "t"; then
-		set_tmux_option "${VAR_KEY_PREFIX}-t" "tree | less,left,50"
+		set_tmux_option "${VAR_KEY_PREFIX}-t" "$(tree_command) | less,left,50"
 	fi
 	if key_not_defined "T"; then
-		set_tmux_option "${VAR_KEY_PREFIX}-T" "tree | less,left,50,focus"
+		set_tmux_option "${VAR_KEY_PREFIX}-T" "$(tree_command) | less,left,50,focus"
 	fi
 }
 
