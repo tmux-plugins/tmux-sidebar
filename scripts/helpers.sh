@@ -64,3 +64,11 @@ get_value_from_option_name() {
 	local option="$1"
 	echo "$(get_tmux_option "$option" "")"
 }
+
+get_pane_info() {
+	local pane_id="$1"
+	local format_strings="#{pane_id},$2"
+	tmux list-panes -t "$pane_id" -F "$format_strings" |
+		\grep "$pane_id" |
+		cut -d',' -f2-
+}

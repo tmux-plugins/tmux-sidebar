@@ -13,9 +13,8 @@ POSITION="$(echo "$ARGS" | cut -d',' -f2)"   # "right"
 SIZE="$(echo "$ARGS"     | cut -d',' -f3)"   # "20"
 FOCUS="$(echo "$ARGS"    | cut -d',' -f4)"   # "focus"
 
-current_pane_info="$(tmux list-panes -t "$PANE_ID" -F "#{pane_id},#{pane_width},#{pane_current_path}" | \grep "$PANE_ID")"
-PANE_WIDTH="$(echo "$current_pane_info" | cut -d',' -f2)"
-PANE_CURRENT_PATH="$(echo "$current_pane_info" | cut -d',' -f3)"
+PANE_WIDTH="$(get_pane_info "$PANE_ID" "#{pane_width}")"
+PANE_CURRENT_PATH="$(get_pane_info "$PANE_ID" "#{pane_current_path}")"
 
 supported_tmux_version_ok() {
 	$CURRENT_DIR/check_tmux_version.sh "$SUPPORTED_TMUX_VERSION"
@@ -28,6 +27,11 @@ sidebar_registration() {
 sidebar_pane_id() {
 	sidebar_registration |
 		cut -d',' -f1
+}
+
+sidebar_pane_args() {
+	echo "$(sidebar_registration)" |
+		cut -d',' -f2-
 }
 
 register_sidebar() {
@@ -57,8 +61,38 @@ has_sidebar() {
 	fi
 }
 
+current_pane_width_not_changed() {
+	if [ $PANE_WIDTH -eq $1 ]; then
+		return 0
+	else
+		return 1
+	fi
+}
+
 kill_sidebar() {
-	tmux kill-pane -t "$(sidebar_pane_id)"
+	# get data before killing the sidebar
+	local sidebar_pane_id="$(sidebar_pane_id)"
+	local sidebar_args="$(sidebar_pane_args)"
+	local sidebar_position="$(echo "$sidebar_args" | cut -d',' -f2)" # left or defults to right
+	local sidebar_width="$(get_pane_info "$sidebar_pane_id" "#{pane_width}")"
+
+	# kill the sidebar
+	tmux kill-pane -t "$sidebar_pane_id"
+
+	# check current pane "expanded" properly
+	local new_current_pane_width="$(get_pane_info "$PANE_ID" "#{pane_width}")"
+	if current_pane_width_not_changed "$new_current_pane_width"; then
+		# need to expand current pane manually
+		local direction_flag
+		if [[ "$sidebar_position" =~ "left" ]]; then
+			direction_flag="-L"
+		else
+			direction_flag="-R"
+		fi
+		# compensate 1 column
+		tmux resize-pane "$direction_flag" "$((sidebar_width + 1))"
+	fi
+	PANE_WIDTH="$new_current_pane_width"
 }
 
 orientation_option() {

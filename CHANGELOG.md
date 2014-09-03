@@ -3,6 +3,7 @@
 ### master
 - if the pane is too narrow do not show sidebar
 - improve sidebar max size handling
+- handle invalid pane resizing after sidebar is killed
 
 ### v0.2.0, Sep 03, 2014
 - automatic sidebar opening for another sidebar type
