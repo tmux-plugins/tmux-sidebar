@@ -14,6 +14,10 @@ COMMAND="$(echo "$ARGS" | sed "s/.*${OPTION_DELIMITER}//")"   # "tree | less"
 PANE_ID="$TMUX_PANE"
 
 
+supported_tmux_version_ok() {
+	$CURRENT_DIR/check_tmux_version.sh "$SUPPORTED_TMUX_VERSION"
+}
+
 sidebar_pane_id() {
 	get_tmux_option "${REGISTERED_PANE_PREFIX}-${PANE_ID}" ""
 }
@@ -73,6 +77,8 @@ toggle_sidebar() {
 }
 
 main() {
-	toggle_sidebar
+	if supported_tmux_version_ok; then
+		toggle_sidebar
+	fi
 }
 main
