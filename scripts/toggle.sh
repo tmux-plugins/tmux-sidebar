@@ -28,7 +28,11 @@ sidebar_pane_id() {
 		cut -d',' -f1
 }
 
-register_new_sidebar() {
+register_sidebar() {
+	set_tmux_option "${REGISTERED_SIDEBAR_PREFIX}-${1}" "sidebar"
+}
+
+register_sidebar_for_current_pane() {
 	set_tmux_option "${REGISTERED_PANE_PREFIX}-${PANE_ID}" "$1,$ARGS"
 }
 
@@ -77,7 +81,8 @@ size_defined() {
 
 create_sidebar() {
 	local new_sidebar_id=$(tmux split-window "$(orientation_option)" -c "$PANE_CURRENT_PATH" -P -F "#{pane_id}" "$COMMAND")
-	register_new_sidebar "$new_sidebar_id"
+	register_sidebar "$new_sidebar_id"
+	register_sidebar_for_current_pane "$new_sidebar_id"
 	if sidebar_left; then
 		tmux swap-pane -U
 	fi
@@ -86,6 +91,18 @@ create_sidebar() {
 	fi
 	if no_focus; then
 		tmux last-pane
+	fi
+}
+
+current_pane_is_sidebar() {
+	local var="$(get_tmux_option "${REGISTERED_SIDEBAR_PREFIX}-${PANE_ID}" "")"
+	[ -n "$var" ]
+}
+
+exit_unless_pane_can_have_sidebar() {
+	if current_pane_is_sidebar; then
+		display_message "Sidebars can't have sidebars!"
+		exit
 	fi
 }
 
@@ -103,6 +120,7 @@ toggle_sidebar() {
 
 main() {
 	if supported_tmux_version_ok; then
+		exit_unless_pane_can_have_sidebar
 		toggle_sidebar
 	fi
 }
