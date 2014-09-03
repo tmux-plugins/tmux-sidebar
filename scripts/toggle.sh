@@ -14,6 +14,9 @@ POSITION="$(echo "$ARGS" | cut -d',' -f2)"   # "right"
 SIZE="$(echo "$ARGS"     | cut -d',' -f3)"   # "20"
 FOCUS="$(echo "$ARGS"    | cut -d',' -f4)"   # "focus"
 
+current_pane_info="$(tmux list-panes -t "$PANE_ID" -F "#{pane_id},#{pane_width},#{pane_current_path}" | \grep "$PANE_ID")"
+PANE_WIDTH="$(echo "$current_pane_info" | cut -d',' -f2)"
+PANE_CURRENT_PATH="$(echo "$current_pane_info" | cut -d',' -f3)"
 
 supported_tmux_version_ok() {
 	$CURRENT_DIR/check_tmux_version.sh "$SUPPORTED_TMUX_VERSION"
@@ -99,9 +102,20 @@ current_pane_is_sidebar() {
 	[ -n "$var" ]
 }
 
+current_pane_too_narrow() {
+	[ $PANE_WIDTH -lt 51 ]
+}
+
 exit_unless_pane_can_have_sidebar() {
 	if current_pane_is_sidebar; then
 		display_message "Sidebars can't have sidebars!"
+		exit
+	fi
+}
+
+exit_if_pane_too_narrow() {
+	if current_pane_too_narrow; then
+		display_message "Pane too narrow for the sidebar"
 		exit
 	fi
 }
@@ -114,6 +128,7 @@ toggle_sidebar() {
 			create_sidebar
 		fi
 	else
+		exit_if_pane_too_narrow
 		create_sidebar
 	fi
 }
