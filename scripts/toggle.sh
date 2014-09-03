@@ -82,13 +82,15 @@ size_defined() {
 }
 
 create_sidebar() {
-	local new_sidebar_id=$(tmux split-window "$(orientation_option)" -c "$PANE_CURRENT_PATH" -P -F "#{pane_id}" "$COMMAND")
-	register_sidebar "$new_sidebar_id"
-	register_sidebar_for_current_pane "$new_sidebar_id"
+	local sidebar_info=$(tmux split-window "$(orientation_option)" -c "$PANE_CURRENT_PATH" -P -F "#{pane_id},#{pane_width}" "$COMMAND")
+	local sidebar_id=$(echo "$sidebar_info" | cut -d',' -f1)
+	local sidebar_width=$(echo "$sidebar_info" | cut -d',' -f2)  # half a pane
+	register_sidebar "$sidebar_id"
+	register_sidebar_for_current_pane "$sidebar_id"
 	if sidebar_left; then
 		tmux swap-pane -U
 	fi
-	if size_defined; then
+	if size_defined && [ $SIZE -lt $sidebar_width ]; then
 		tmux resize-pane -x "$SIZE"
 	fi
 	if no_focus; then
@@ -102,7 +104,7 @@ current_pane_is_sidebar() {
 }
 
 current_pane_too_narrow() {
-	[ $PANE_WIDTH -lt 51 ]
+	[ $PANE_WIDTH -lt 81 ]
 }
 
 exit_unless_pane_can_have_sidebar() {
