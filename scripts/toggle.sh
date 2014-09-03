@@ -7,8 +7,7 @@ source "$CURRENT_DIR/variables.sh"
 
 # script global vars
 ARGS="$1"               # example args format: "tree | less,right,20,focus"
-PANE_CURRENT_PATH="$2"
-PANE_ID="$3"
+PANE_ID="$2"
 COMMAND="$(echo "$ARGS"  | cut -d',' -f1)"   # "tree | less"
 POSITION="$(echo "$ARGS" | cut -d',' -f2)"   # "right"
 SIZE="$(echo "$ARGS"     | cut -d',' -f3)"   # "20"
