@@ -1,6 +1,8 @@
 # Changelog
 
 ### master
+
+### v0.1.0, Sep 03, 2014
 - started the project
 - init script done
 - toggle script working
