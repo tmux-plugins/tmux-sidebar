@@ -8,25 +8,33 @@ source "$CURRENT_DIR/variables.sh"
 # script global vars
 ARGS="$1"               # example args format: "tree | less,right,20,focus"
 PANE_CURRENT_PATH="$2"
+PANE_ID="$3"
 COMMAND="$(echo "$ARGS"  | cut -d',' -f1)"   # "tree | less"
 POSITION="$(echo "$ARGS" | cut -d',' -f2)"   # "right"
 SIZE="$(echo "$ARGS"     | cut -d',' -f3)"   # "20"
 FOCUS="$(echo "$ARGS"    | cut -d',' -f4)"   # "focus"
 
 
-PANE_ID="$TMUX_PANE"
-
-
 supported_tmux_version_ok() {
 	$CURRENT_DIR/check_tmux_version.sh "$SUPPORTED_TMUX_VERSION"
 }
 
-sidebar_pane_id() {
+sidebar_registration() {
 	get_tmux_option "${REGISTERED_PANE_PREFIX}-${PANE_ID}" ""
 }
 
+sidebar_pane_id() {
+	sidebar_registration |
+		cut -d',' -f1
+}
+
 register_new_sidebar() {
-	set_tmux_option "${REGISTERED_PANE_PREFIX}-${PANE_ID}" "$1"
+	set_tmux_option "${REGISTERED_PANE_PREFIX}-${PANE_ID}" "$1,$ARGS"
+}
+
+registration_not_for_the_same_command() {
+	local registered_args="$(sidebar_registration | cut -d',' -f2-)"
+	[[ $ARGS != $registered_args ]]
 }
 
 pane_exists() {
@@ -36,8 +44,7 @@ pane_exists() {
 }
 
 has_sidebar() {
-	local sidebar_pane_id="$(sidebar_pane_id)"
-	if [ -n $sidebar_pane_id ] && pane_exists "$sidebar_pane_id"; then
+	if [ -n "$(sidebar_registration)" ] && pane_exists "$(sidebar_pane_id)"; then
 		return 0
 	else
 		return 1
@@ -85,6 +92,10 @@ create_sidebar() {
 toggle_sidebar() {
 	if has_sidebar; then
 		kill_sidebar
+		# if using different sidebar command automatically open a new sidebar
+		if registration_not_for_the_same_command; then
+			create_sidebar
+		fi
 	else
 		create_sidebar
 	fi

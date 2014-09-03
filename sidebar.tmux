@@ -22,7 +22,7 @@ set_key_bindings() {
 	for option in $stored_key_vars; do
 		key="$(get_key_from_option_name "$option")"
 		value="$(get_value_from_option_name "$option")"
-		tmux bind-key "$key" run-shell "$CURRENT_DIR/scripts/toggle.sh '$value' '#{pane_current_path}'"
+		tmux bind-key "$key" run-shell "$CURRENT_DIR/scripts/toggle.sh '$value' '#{pane_current_path}' '#{pane_id}'"
 	done
 }
 

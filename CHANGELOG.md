@@ -1,6 +1,7 @@
 # Changelog
 
 ### master
+- automatic sidebar opening for another sidebar type
 
 ### v0.1.0, Sep 03, 2014
 - started the project
