@@ -37,14 +37,14 @@ registration_not_for_the_same_command() {
 	[[ $ARGS != $registered_args ]]
 }
 
-pane_exists() {
-	local pane_id="$1"
+sidebar_exists() {
+	local pane_id="$(sidebar_pane_id)"
 	tmux list-panes -F "#{pane_id}" 2>/dev/null |
 		\grep -q "^${pane_id}$"
 }
 
 has_sidebar() {
-	if [ -n "$(sidebar_registration)" ] && pane_exists "$(sidebar_pane_id)"; then
+	if [ -n "$(sidebar_registration)" ] && sidebar_exists; then
 		return 0
 	else
 		return 1
