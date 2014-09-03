@@ -7,6 +7,7 @@ source "$CURRENT_DIR/variables.sh"
 
 # script global vars
 ARGS="$1"       # example args format: "right,compact->tree | less"
+PANE_CURRENT_PATH="$2"
 OPTIONS="$(echo "$ARGS" | sed "s/${OPTION_DELIMITER}.*//")"   # "right,compact"
 COMMAND="$(echo "$ARGS" | sed "s/.*${OPTION_DELIMITER}//")"   # "tree | less"
 
@@ -53,7 +54,7 @@ no_focus() {
 }
 
 create_sidebar() {
-	local new_sidebar_id=$(tmux split-window "$(orientation_option)" -P -F "#{pane_id}" "$COMMAND")
+	local new_sidebar_id=$(tmux split-window "$(orientation_option)" -c "$PANE_CURRENT_PATH" -P -F "#{pane_id}" "$COMMAND")
 	register_new_sidebar "$new_sidebar_id"
 	if sidebar_left; then
 		tmux swap-pane -U
