@@ -10,7 +10,7 @@ set_default_key_binding_options() {
 		set_tmux_option "${VAR_KEY_PREFIX}-t" "tree | less,left,50"
 	fi
 	if key_not_defined "T"; then
-		set_tmux_option "${VAR_KEY_PREFIX}-T" "tree | less,,50"
+		set_tmux_option "${VAR_KEY_PREFIX}-T" "tree | less,left,50,focus"
 	fi
 }
 

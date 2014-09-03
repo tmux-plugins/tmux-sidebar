@@ -6,11 +6,12 @@ source "$CURRENT_DIR/helpers.sh"
 source "$CURRENT_DIR/variables.sh"
 
 # script global vars
-ARGS="$1"                    # example args format: "tree | less,right,20"
+ARGS="$1"               # example args format: "tree | less,right,20,focus"
 PANE_CURRENT_PATH="$2"
 COMMAND="$(echo "$ARGS"  | cut -d',' -f1)"   # "tree | less"
 POSITION="$(echo "$ARGS" | cut -d',' -f2)"   # "right"
 SIZE="$(echo "$ARGS"     | cut -d',' -f3)"   # "20"
+FOCUS="$(echo "$ARGS"    | cut -d',' -f4)"   # "focus"
 
 
 PANE_ID="$TMUX_PANE"
@@ -56,7 +57,11 @@ sidebar_left() {
 }
 
 no_focus() {
-	return 0
+	if [[ $FOCUS =~ (^focus) ]]; then
+		return 1
+	else
+		return 0
+	fi
 }
 
 size_defined() {
