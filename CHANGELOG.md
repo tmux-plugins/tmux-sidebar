@@ -1,6 +1,8 @@
 # Changelog
 
 ### master
+
+### v0.3.0, Sep 04, 2014
 - if the pane is too narrow do not show sidebar
 - improve sidebar max size handling
 - handle invalid pane resizing after sidebar is killed
