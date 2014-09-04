@@ -1,6 +1,7 @@
 # Changelog
 
 ### master
+- change default key bindings to `Tab` and `Backspace`
 
 ### v0.3.0, Sep 04, 2014
 - if the pane is too narrow do not show sidebar

@@ -7,8 +7,8 @@ Requirements: `tmux 1.9` or higher
 
 ### Key bindings
 
-- `prefix + t` - show sidebar with directory tree
-- `prefix + T` - show sidebar and move cursor to it (focus it)
+- `prefix + Tab` - show sidebar with directory tree
+- `prefix + Backspace` - show sidebar and move cursor to it (focus it)
 
 ### Installation with [Tmux Plugin Manager](https://github.com/tmux-plugins/tpm) (recommended)
 
