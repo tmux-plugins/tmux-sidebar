@@ -35,7 +35,9 @@ sidebar_pane_args() {
 }
 
 register_sidebar() {
-	set_tmux_option "${REGISTERED_SIDEBAR_PREFIX}-${1}" "sidebar"
+	local sidebar_id="$1"
+	local pane_id="$2"
+	set_tmux_option "${REGISTERED_SIDEBAR_PREFIX}-${sidebar_id}" "$pane_id"
 }
 
 register_sidebar_for_current_pane() {
@@ -131,7 +133,7 @@ create_sidebar() {
 	local sidebar_info=$(tmux split-window "$(orientation_option)" -c "$PANE_CURRENT_PATH" -P -F "#{pane_id},#{pane_width}" "$COMMAND")
 	local sidebar_id=$(echo "$sidebar_info" | cut -d',' -f1)
 	local sidebar_width=$(echo "$sidebar_info" | cut -d',' -f2)  # half a pane
-	register_sidebar "$sidebar_id"
+	register_sidebar "$sidebar_id" "$PANE_ID"
 	register_sidebar_for_current_pane "$sidebar_id"
 	if sidebar_left; then
 		tmux swap-pane -U
@@ -158,11 +160,11 @@ current_pane_too_narrow() {
 	[ $PANE_WIDTH -lt 81 ]
 }
 
-exit_unless_pane_can_have_sidebar() {
-	if current_pane_is_sidebar; then
-		display_message "Sidebars can't have sidebars!"
-		exit
-	fi
+execute_command_from_main_pane() {
+	# get pane_id for this sidebar
+	local main_pane_id="$(get_tmux_option "${REGISTERED_SIDEBAR_PREFIX}-${PANE_ID}" "")"
+	# execute the same command as if from the "main" pane
+	$CURRENT_DIR/toggle.sh "$ARGS" "$main_pane_id"
 }
 
 exit_if_pane_too_narrow() {
@@ -187,8 +189,11 @@ toggle_sidebar() {
 
 main() {
 	if supported_tmux_version_ok; then
-		exit_unless_pane_can_have_sidebar
-		toggle_sidebar
+		if current_pane_is_sidebar; then
+			execute_command_from_main_pane
+		else
+			toggle_sidebar
+		fi
 	fi
 }
 main
