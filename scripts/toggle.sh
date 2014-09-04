@@ -178,9 +178,9 @@ toggle_sidebar() {
 	if has_sidebar; then
 		kill_sidebar
 		# if using different sidebar command automatically open a new sidebar
-		if registration_not_for_the_same_command; then
-			create_sidebar
-		fi
+		# if registration_not_for_the_same_command; then
+		# 	create_sidebar
+		# fi
 	else
 		exit_if_pane_too_narrow
 		create_sidebar
