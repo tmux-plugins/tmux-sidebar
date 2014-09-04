@@ -1,6 +1,8 @@
 # Changelog
 
 ### master
+
+### v0.5.0, Sep 04, 2014
 - key bindings work from the sidebar now too
 
 ### v0.4.0, Sep 04, 2014
