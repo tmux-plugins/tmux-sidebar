@@ -1,6 +1,8 @@
 # Changelog
 
 ### master
+
+### v0.4.0, Sep 04, 2014
 - change default key bindings to `Tab` and `Backspace`
 - less does not wrap lines in the sidebar
 - handle issue with refreshing the main pane
