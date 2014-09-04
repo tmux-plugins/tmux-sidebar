@@ -72,3 +72,20 @@ get_pane_info() {
 		\grep "$pane_id" |
 		cut -d',' -f2-
 }
+
+sidebar_dir() {
+	echo "$SIDEBAR_DIR"
+}
+
+sidebar_file() {
+	echo "$(sidebar_dir)/directory_widths.txt"
+}
+
+directory_in_sidebar_file() {
+	grep -q "^$1" $(sidebar_file) 2>/dev/null
+}
+
+width_from_sidebar_file() {
+	grep "^$1" $(sidebar_file) |
+		cut -f2
+}

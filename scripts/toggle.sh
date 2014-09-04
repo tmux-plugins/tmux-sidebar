@@ -76,6 +76,8 @@ kill_sidebar() {
 	local sidebar_position="$(echo "$sidebar_args" | cut -d',' -f2)" # left or defults to right
 	local sidebar_width="$(get_pane_info "$sidebar_pane_id" "#{pane_width}")"
 
+	$CURRENT_DIR/save_sidebar_width.sh "$PANE_CURRENT_PATH" "$sidebar_width"
+
 	# kill the sidebar
 	tmux kill-pane -t "$sidebar_pane_id"
 
@@ -133,7 +135,11 @@ create_sidebar() {
 	if sidebar_left; then
 		tmux swap-pane -U
 	fi
-	if size_defined && [ $SIZE -lt $sidebar_width ]; then
+	if directory_in_sidebar_file "$PANE_CURRENT_PATH"; then
+		# use stored sidebar width for the directory
+		local saved_width="$(width_from_sidebar_file "$PANE_CURRENT_PATH")"
+		tmux resize-pane -x "$((saved_width - 1))"
+	elif size_defined && [ $SIZE -lt $sidebar_width ]; then
 		tmux resize-pane -x "$((SIZE - 1))"
 	fi
 	if no_focus; then
