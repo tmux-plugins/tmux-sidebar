@@ -1,18 +1,34 @@
 # Tmux Sidebar
 
-Instantly shows directory tree in pane sidebar. It's fast, convenient and works
-great with vim.
+`tmux-sidebar` does one thing: it opens a tree directory listing for the current
+path. It's fast, convenient and works great with vim.
 
 ![screenshot](/screenshot.gif)
+
+Some of the features that make the plugin more appealing than doing the same
+thing manually each time:
+
+- fast<br/>
+  Much faster than doing each step manually.
+- smart sizing<br/>
+  Sidebar remembers its size, so the next time you open it, it will have the
+  **exact same** width. This is a per-directory property, so you can have just
+  the right size for multiple dirs.
+- toggling<br/>
+  The same key binding opens and closes the sidebar.
+- uninterrupted workflow<br/>
+  The main `prefix + Tab` key binding opens a sidebar but **does not** move
+  cursor to it.
+- pane layout stays the same
+  No matter which pane layout you prefer, sidebar trys hard not to mess your
+  pane splits. Open, then close the sidebar and everything should look the same.
 
 Requirements: `tmux 1.9` or higher
 
 ### Key bindings
 
-- `prefix + Tab` - toggle sidebar with directory tree
+- `prefix + Tab` - toggle sidebar with a directory tree
 - `prefix + Backspace` - toggle sidebar and move cursor to it (focus it)
-
-Key bindings toggle the sidebar!
 
 ### Installation with [Tmux Plugin Manager](https://github.com/tmux-plugins/tpm) (recommended)
 
