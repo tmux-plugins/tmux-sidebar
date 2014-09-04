@@ -23,10 +23,10 @@ tree_command() {
 set_default_key_binding_options() {
 	local tree_command="$(tree_command)"
 	if key_not_defined "Tab"; then
-		set_tmux_option "${VAR_KEY_PREFIX}-Tab" "$tree_command | less,left,50"
+		set_tmux_option "${VAR_KEY_PREFIX}-Tab" "$tree_command | less -S,left,50"
 	fi
 	if key_not_defined "Bspace"; then
-		set_tmux_option "${VAR_KEY_PREFIX}-Bspace" "$tree_command | less,left,50,focus"
+		set_tmux_option "${VAR_KEY_PREFIX}-Bspace" "$tree_command | less -S,left,50,focus"
 	fi
 }
 
