@@ -19,7 +19,7 @@ thing manually each time:
 - uninterrupted workflow<br/>
   The main `prefix + Tab` key binding opens a sidebar but **does not** move
   cursor to it.
-- pane layout stays the same
+- pane layout stays the same<br/>
   No matter which pane layout you prefer, sidebar trys hard not to mess your
   pane splits. Open, then close the sidebar and everything should look the same.
 
