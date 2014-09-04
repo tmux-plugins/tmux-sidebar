@@ -119,8 +119,9 @@ size_defined() {
 
 # this is done just to refresh the main pane. See github issue #14.
 touch_resize_main_pane() {
+	local sidebar_id="$1"
 	if sidebar_left; then
-		tmux resize-pane -t "$PANE_ID" "-R" 1
+		tmux resize-pane -t "$sidebar_id" "-R" 1
 	else
 		tmux resize-pane -t "$PANE_ID" "-L" 1
 	fi
@@ -145,7 +146,7 @@ create_sidebar() {
 	if no_focus; then
 		tmux last-pane
 	fi
-	touch_resize_main_pane
+	touch_resize_main_pane "$sidebar_id"
 }
 
 current_pane_is_sidebar() {
