@@ -3,6 +3,8 @@
 Instantly shows directory tree in pane sidebar. It's fast, convenient and works
 great with vim.
 
+![screenshot](/screenshot.gif)
+
 Requirements: `tmux 1.9` or higher
 
 ### Key bindings
