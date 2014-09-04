@@ -3,6 +3,7 @@
 ### master
 - change default key bindings to `Tab` and `Backspace`
 - less does not wrap lines in the sidebar
+- handle issue with refreshing the main pane
 
 ### v0.3.0, Sep 04, 2014
 - if the pane is too narrow do not show sidebar

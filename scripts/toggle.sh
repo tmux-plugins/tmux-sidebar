@@ -115,6 +115,15 @@ size_defined() {
 	[ -n $SIZE ]
 }
 
+# this is done just to refresh the main pane. See github issue #14.
+touch_resize_main_pane() {
+	if sidebar_left; then
+		tmux resize-pane -t "$PANE_ID" "-R" 1
+	else
+		tmux resize-pane -t "$PANE_ID" "-L" 1
+	fi
+}
+
 create_sidebar() {
 	local sidebar_info=$(tmux split-window "$(orientation_option)" -c "$PANE_CURRENT_PATH" -P -F "#{pane_id},#{pane_width}" "$COMMAND")
 	local sidebar_id=$(echo "$sidebar_info" | cut -d',' -f1)
@@ -125,11 +134,12 @@ create_sidebar() {
 		tmux swap-pane -U
 	fi
 	if size_defined && [ $SIZE -lt $sidebar_width ]; then
-		tmux resize-pane -x "$SIZE"
+		tmux resize-pane -x "$((SIZE - 1))"
 	fi
 	if no_focus; then
 		tmux last-pane
 	fi
+	touch_resize_main_pane
 }
 
 current_pane_is_sidebar() {
