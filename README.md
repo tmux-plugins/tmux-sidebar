@@ -7,8 +7,10 @@ Requirements: `tmux 1.9` or higher
 
 ### Key bindings
 
-- `prefix + Tab` - show sidebar with directory tree
-- `prefix + Backspace` - show sidebar and move cursor to it (focus it)
+- `prefix + Tab` - toggle sidebar with directory tree
+- `prefix + Backspace` - toggle sidebar and move cursor to it (focus it)
+
+Key bindings toggle the sidebar!
 
 ### Installation with [Tmux Plugin Manager](https://github.com/tmux-plugins/tpm) (recommended)
 
