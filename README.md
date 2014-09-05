@@ -59,6 +59,33 @@ Reload TMUX environment:
 
 You should now be able to use the plugin.
 
+### Options
+
+You can customize `tmux-sidebar` by placing the options to `.tmux.conf` and
+reloading Tmux environment.
+
+> Can I have the sidebar on the right?
+
+    set -g @sidebar-tree-position 'right'
+
+> I don't like the default 'prefix + Tab' key binding. Can I change it to be
+'prefix + e'?
+
+    set -g @sidebar-tree 'e'
+
+> How can I change the default 'prefix + Backspace' to be 'prefix + w'?
+
+    set -g @sidebar-tree-focus 'w'
+
+> I see the tree sidebar uses 'less' as a pager. I would like to use 'more'.
+
+    set -g @sidebar-tree-pager 'more'
+
+> The default sidebar width is 40 columns. I want the sidebar to be wider by
+default!
+
+    set -g @sidebar-tree-width '60'
+
 ### Other goodies
 
 - [tmux-copycat](https://github.com/tmux-plugins/tmux-copycat) - a plugin for
