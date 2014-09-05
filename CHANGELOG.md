@@ -2,6 +2,7 @@
 
 ### master
 - bugfix: invalid params for 'save_sidebar_width' script
+- remove tilde characters from less
 
 ### v0.6.0, Sep 05, 2014
 - more options for customizing tree sidebar
