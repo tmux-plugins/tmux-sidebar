@@ -20,10 +20,10 @@ thing manually each time:
   The main `prefix + Tab` key binding opens a sidebar but **does not** move
   cursor to it.
 - **pane layout stays the same**<br/>
-  No matter which pane layout you prefer, sidebar trys hard not to mess your
+  No matter which pane layout you prefer, sidebar tries hard not to mess your
   pane splits. Open, then close the sidebar and everything should look the same.
 
-Requirements: `tmux 1.9` or higher
+Requirements: `tmux 1.9` or higher, `tree` recommended but not required
 
 ### Key bindings
 
@@ -61,8 +61,12 @@ You should now be able to use the plugin.
 
 ### Options
 
-You can customize `tmux-sidebar` by placing the options to `.tmux.conf` and
-reloading Tmux environment.
+Customize `tmux-sidebar` by placing options in `.tmux.conf` and reloading Tmux
+environment.
+
+> How can I run some other command in the sidebar?
+
+    set -g @sidebar-tree-command 'ls -1'
 
 > Can I have the sidebar on the right?
 
