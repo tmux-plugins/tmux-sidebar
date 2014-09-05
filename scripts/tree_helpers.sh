@@ -7,11 +7,18 @@ command_exists() {
 }
 
 tree_command() {
-	if command_exists "tree"; then
-		echo "tree -C"
+	local user_command="$(tree_user_command)"
+	if [ -n "$user_command" ]; then
+		echo "$user_command"
+	elif command_exists "tree"; then
+		echo "$TREE_COMMAND"
 	else
 		echo "$custom_tree_command"
 	fi
+}
+
+tree_user_command() {
+	get_tmux_option "$TREE_COMMAND_OPTION" ""
 }
 
 tree_key() {
