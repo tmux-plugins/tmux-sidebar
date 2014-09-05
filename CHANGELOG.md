@@ -1,6 +1,8 @@
 # Changelog
 
 ### master
+
+### v0.6.0, Sep 05, 2014
 - more options for customizing tree sidebar
 - describe various options in the readme
 - fix sidebar right resizing
