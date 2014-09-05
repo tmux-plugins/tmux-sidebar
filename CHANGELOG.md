@@ -1,6 +1,8 @@
 # Changelog
 
 ### master
+
+### v0.7.0, Sep 05, 2014
 - bugfix: invalid params for 'save_sidebar_width' script
 - remove tilde characters from less
 - improve less and tree commands
