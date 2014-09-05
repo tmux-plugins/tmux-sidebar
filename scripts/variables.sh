@@ -9,7 +9,7 @@ TREE_OPTION="@sidebar-tree"
 TREE_FOCUS_KEY="Bspace"
 TREE_FOCUS_OPTION="@sidebar-tree-focus"
 
-TREE_PAGER="less -S --tilde"
+TREE_PAGER="LESS='' less --dumb --chop-long-lines --tilde --IGNORE-CASE --RAW-CONTROL-CHARS"
 TREE_PAGER_OPTION="@sidebar-tree-pager"
 
 TREE_POSITION="left"

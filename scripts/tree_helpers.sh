@@ -8,7 +8,7 @@ command_exists() {
 
 tree_command() {
 	if command_exists "tree"; then
-		echo "tree"
+		echo "tree -C"
 	else
 		echo "$custom_tree_command"
 	fi
