@@ -119,62 +119,57 @@ size_defined() {
 	[ -n $SIZE ]
 }
 
-# this is done just to refresh the main pane. See github issue #14.
-touch_resize_main_pane() {
-	local sidebar_id="$1"
-	if sidebar_left; then
+desired_sidebar_size() {
+	local half_pane="$((PANE_WIDTH / 2))"
+	if directory_in_sidebar_file "$PANE_CURRENT_PATH"; then
+		# use stored sidebar width for the directory
+		echo "$(width_from_sidebar_file "$PANE_CURRENT_PATH")"
+	elif size_defined && [ $SIZE -lt $half_pane ]; then
+		echo $SIZE
+	fi
+}
+
+resize_sidebar_left() {
+	local "$sidebar_id"
+	local desired_size="$(desired_sidebar_size)"
+	if [ -n $desired_size ]; then
+		tmux resize-pane -x "$((desired_size - 1))"
+		# this is done just to refresh the main pane. See github issue #14.
 		tmux resize-pane -t "$sidebar_id" "-R" 1
-	else
-		tmux resize-pane -t "$PANE_ID" "-L" 1
 	fi
 }
 
-sidebar_left_resize() {
-	local sidebar_width="$1"
-	if directory_in_sidebar_file "$PANE_CURRENT_PATH"; then
-		# use stored sidebar width for the directory
-		local saved_width="$(width_from_sidebar_file "$PANE_CURRENT_PATH")"
-		tmux resize-pane -x "$((saved_width - 1))"
-	elif size_defined && [ $SIZE -lt $sidebar_width ]; then
-		tmux resize-pane -x "$((SIZE - 1))"
-	fi
-}
-
-sidebar_right_resize() {
-	local sidebar_width="$1"
-	local correction
-	if directory_in_sidebar_file "$PANE_CURRENT_PATH"; then
-		# use stored sidebar width for the directory
-		local saved_width="$(width_from_sidebar_file "$PANE_CURRENT_PATH")"
-		correction="$((sidebar_width - saved_width))"
-		tmux resize-pane -t "$PANE_ID" -R "$((correction + 1))"
-	elif size_defined && [ $SIZE -lt $sidebar_width ]; then
-		correction="$((SIZE - saved_width))"
-		tmux resize-pane -t "$PANE_ID" -R "$((correction + 1))"
-	fi
-}
-
-split_sidebar() {
+split_sidebar_left() {
 	tmux split-window "$(orientation_option)" -c "$PANE_CURRENT_PATH" -P -F "#{pane_id},#{pane_width}" "$COMMAND"
 }
 
-create_sidebar() {
-	local sidebar_info=$(split_sidebar)
+create_sidebar_left() {
+	local sidebar_info=$(split_sidebar_left)
 	local sidebar_id=$(echo "$sidebar_info" | cut -d',' -f1)
-	local sidebar_width=$(echo "$sidebar_info" | cut -d',' -f2)  # half a pane
 	register_sidebar "$sidebar_id" "$PANE_ID"
 	register_sidebar_for_current_pane "$sidebar_id"
-	if sidebar_left; then
-		tmux swap-pane -U
-		sidebar_left_resize "$sidebar_width"
-	else  # sidebar right
-		sidebar_right_resize "$sidebar_width"
-	fi
+	tmux swap-pane -U
+	resize_sidebar_left "$sidebar_id"
 
 	if no_focus; then
 		tmux last-pane
 	fi
-	touch_resize_main_pane "$sidebar_id"
+}
+
+split_sidebar_right() {
+	local sidebar_size=$(desired_sidebar_size)
+	tmux split-window "$(orientation_option)" -l "$sidebar_size" -c "$PANE_CURRENT_PATH" -P -F "#{pane_id},#{pane_width}" "$COMMAND"
+}
+
+create_sidebar_right() {
+	local sidebar_info=$(split_sidebar_right)
+	local sidebar_id=$(echo "$sidebar_info" | cut -d',' -f1)
+	register_sidebar "$sidebar_id" "$PANE_ID"
+	register_sidebar_for_current_pane "$sidebar_id"
+
+	if no_focus; then
+		tmux last-pane
+	fi
 }
 
 current_pane_is_sidebar() {
@@ -209,7 +204,11 @@ toggle_sidebar() {
 		# fi
 	else
 		exit_if_pane_too_narrow
-		create_sidebar
+		if sidebar_left; then
+			create_sidebar_left
+		else
+			create_sidebar_right
+		fi
 	fi
 }
 
