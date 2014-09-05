@@ -157,7 +157,7 @@ current_pane_is_sidebar() {
 }
 
 current_pane_too_narrow() {
-	[ $PANE_WIDTH -lt 81 ]
+	[ $PANE_WIDTH -lt $MINIMUM_WIDTH_FOR_SIDEBAR ]
 }
 
 execute_command_from_main_pane() {

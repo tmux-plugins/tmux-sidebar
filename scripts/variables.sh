@@ -1,6 +1,7 @@
 VAR_KEY_PREFIX="@sidebar-key"
 REGISTERED_PANE_PREFIX="@-sidebar-registered-pane"
 REGISTERED_SIDEBAR_PREFIX="@-sidebar-is-sidebar"
+MINIMUM_WIDTH_FOR_SIDEBAR="71"
 
 TREE_KEY="Tab"
 TREE_OPTION="@sidebar-tree"
