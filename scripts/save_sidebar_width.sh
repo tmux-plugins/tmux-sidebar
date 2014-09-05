@@ -5,7 +5,7 @@ CURRENT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 source "$CURRENT_DIR/helpers.sh"
 source "$CURRENT_DIR/variables.sh"
 
-DIR_PATH="$1"
+DIR_PATH="$(echo "$1" | tail -1)" # fixes a bug with invalid param
 WIDTH="$2"
 delimiter=$'\t'
 
