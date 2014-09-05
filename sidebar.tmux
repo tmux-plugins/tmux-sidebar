@@ -4,30 +4,18 @@ CURRENT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 source "$CURRENT_DIR/scripts/helpers.sh"
 source "$CURRENT_DIR/scripts/variables.sh"
-
-custom_tree_command="$CURRENT_DIR/scripts/custom_tree.sh"
-
-command_exists() {
-	local command="$1"
-	type "$command" >/dev/null 2>&1
-}
-
-tree_command() {
-	if command_exists "tree"; then
-		echo "tree"
-	else
-		echo "$custom_tree_command"
-	fi
-}
+source "$CURRENT_DIR/scripts/tree_helpers.sh"
 
 set_default_key_binding_options() {
 	local tree_command="$(tree_command)"
-	if key_not_defined "Tab"; then
-		set_tmux_option "${VAR_KEY_PREFIX}-Tab" "$tree_command | less -S,left,40"
-	fi
-	if key_not_defined "Bspace"; then
-		set_tmux_option "${VAR_KEY_PREFIX}-Bspace" "$tree_command | less -S,left,40,focus"
-	fi
+	local tree_key="$(tree_key)"
+	local tree_focus_key="$(tree_focus_key)"
+	local tree_pager="$(tree_pager)"
+	local tree_position="$(tree_position)"
+	local tree_width="$(tree_width)"
+
+	set_tmux_option "${VAR_KEY_PREFIX}-${tree_key}" "$tree_command | ${tree_pager},${tree_position},${tree_width}"
+	set_tmux_option "${VAR_KEY_PREFIX}-${tree_focus_key}" "$tree_command | ${tree_pager},${tree_position},${tree_width},focus"
 }
 
 set_key_bindings() {

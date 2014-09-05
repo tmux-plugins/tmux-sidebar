@@ -1,6 +1,7 @@
 # Changelog
 
 ### master
+- more options for customizing tree sidebar
 
 ### v0.5.0, Sep 04, 2014
 - key bindings work from the sidebar now too

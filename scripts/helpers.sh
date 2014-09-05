@@ -40,12 +40,6 @@ display_message() {
 	tmux set-option -gq display-time "$saved_display_time"
 }
 
-key_not_defined() {
-	local key="$1"
-	local search_value="$(tmux show-option -gqv "${VAR_KEY_PREFIX}-${key}")"
-	[ -z $search_value ]
-}
-
 stored_key_vars() {
 	tmux show-options -g |
 		\grep -i "^${VAR_KEY_PREFIX}-" |
