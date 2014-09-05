@@ -36,12 +36,8 @@ sidebar_pane_args() {
 
 register_sidebar() {
 	local sidebar_id="$1"
-	local pane_id="$2"
-	set_tmux_option "${REGISTERED_SIDEBAR_PREFIX}-${sidebar_id}" "$pane_id"
-}
-
-register_sidebar_for_current_pane() {
-	set_tmux_option "${REGISTERED_PANE_PREFIX}-${PANE_ID}" "$1,$ARGS"
+	set_tmux_option "${REGISTERED_SIDEBAR_PREFIX}-${sidebar_id}" "$PANE_ID"
+	set_tmux_option "${REGISTERED_PANE_PREFIX}-${PANE_ID}" "${sidebar_id},${ARGS}"
 }
 
 registration_not_for_the_same_command() {
@@ -99,10 +95,6 @@ kill_sidebar() {
 	PANE_WIDTH="$new_current_pane_width"
 }
 
-orientation_option() {
-	echo "-h"
-}
-
 sidebar_left() {
 	[[ $POSITION =~ "left" ]]
 }
@@ -129,44 +121,23 @@ desired_sidebar_size() {
 	fi
 }
 
-resize_sidebar_left() {
-	local "$sidebar_id"
-	local desired_size="$(desired_sidebar_size)"
-	if [ -n $desired_size ]; then
-		tmux resize-pane -x "$((desired_size - 1))"
-		# this is done just to refresh the main pane. See github issue #14.
-		tmux resize-pane -t "$sidebar_id" "-R" 1
-	fi
-}
-
 split_sidebar_left() {
-	tmux split-window "$(orientation_option)" -c "$PANE_CURRENT_PATH" -P -F "#{pane_id},#{pane_width}" "$COMMAND"
-}
-
-create_sidebar_left() {
-	local sidebar_info=$(split_sidebar_left)
-	local sidebar_id=$(echo "$sidebar_info" | cut -d',' -f1)
-	register_sidebar "$sidebar_id" "$PANE_ID"
-	register_sidebar_for_current_pane "$sidebar_id"
-	tmux swap-pane -U
-	resize_sidebar_left "$sidebar_id"
-
-	if no_focus; then
-		tmux last-pane
-	fi
+	local sidebar_size=$(desired_sidebar_size)
+	local inverted_size=$((PANE_WIDTH - $sidebar_size - 1))
+	local sidebar_id="$(tmux new-window -c "$PANE_CURRENT_PATH" -P -F "#{pane_id}" "$COMMAND")"
+	tmux join-pane -hb -l "$inverted_size" -t "$PANE_ID" -s "$sidebar_id"
+	echo "$sidebar_id"
 }
 
 split_sidebar_right() {
 	local sidebar_size=$(desired_sidebar_size)
-	tmux split-window "$(orientation_option)" -l "$sidebar_size" -c "$PANE_CURRENT_PATH" -P -F "#{pane_id},#{pane_width}" "$COMMAND"
+	tmux split-window -h -l "$sidebar_size" -c "$PANE_CURRENT_PATH" -P -F "#{pane_id}" "$COMMAND"
 }
 
-create_sidebar_right() {
-	local sidebar_info=$(split_sidebar_right)
-	local sidebar_id=$(echo "$sidebar_info" | cut -d',' -f1)
-	register_sidebar "$sidebar_id" "$PANE_ID"
-	register_sidebar_for_current_pane "$sidebar_id"
-
+create_sidebar() {
+	local position="$1" # left / right
+	local sidebar_id="$(split_sidebar_${position})"
+	register_sidebar "$sidebar_id"
 	if no_focus; then
 		tmux last-pane
 	fi
@@ -205,9 +176,9 @@ toggle_sidebar() {
 	else
 		exit_if_pane_too_narrow
 		if sidebar_left; then
-			create_sidebar_left
+			create_sidebar "left"
 		else
-			create_sidebar_right
+			create_sidebar "right"
 		fi
 	fi
 }

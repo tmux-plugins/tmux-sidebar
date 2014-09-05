@@ -5,6 +5,7 @@
 - describe various options in the readme
 - fix sidebar right resizing
 - improve sidebar right handling
+- big refactor for smooth window creation
 
 ### v0.5.0, Sep 04, 2014
 - key bindings work from the sidebar now too
