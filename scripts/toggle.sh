@@ -117,7 +117,9 @@ desired_sidebar_size() {
 		# use stored sidebar width for the directory
 		echo "$(width_from_sidebar_file "$PANE_CURRENT_PATH")"
 	elif size_defined && [ $SIZE -lt $half_pane ]; then
-		echo $SIZE
+		echo "$SIZE"
+	else
+		echo "$half_pane"
 	fi
 }
 
