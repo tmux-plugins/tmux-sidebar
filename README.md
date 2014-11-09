@@ -81,9 +81,9 @@ environment.
 
     set -g @sidebar-tree-focus 'w'
 
-> I see the tree sidebar uses 'less' as a pager. I would like to use 'more'.
+> I see the tree sidebar uses 'less' as a pager. I would like to use 'view'.
 
-    set -g @sidebar-tree-pager 'more'
+    set -g @sidebar-tree-pager 'view -'
 
 > The default sidebar width is 40 columns. I want the sidebar to be wider by
 default!
