@@ -1,6 +1,8 @@
 # Changelog
 
 ### master
+- do not colorize `tree` output because a pager application might not handle it
+  well
 
 ### v0.7.0, Sep 05, 2014
 - bugfix: invalid params for 'save_sidebar_width' script
