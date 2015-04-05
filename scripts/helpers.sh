@@ -76,10 +76,12 @@ sidebar_file() {
 }
 
 directory_in_sidebar_file() {
-	grep -q "^$1" $(sidebar_file) 2>/dev/null
+	local pane_current_path="$1"
+	grep -q "^${pane_current_path}\t" $(sidebar_file) 2>/dev/null
 }
 
 width_from_sidebar_file() {
-	grep "^$1" $(sidebar_file) |
+	local pane_current_path="$1"
+	grep "^${pane_current_path}\t" $(sidebar_file) |
 		cut -f2
 }
