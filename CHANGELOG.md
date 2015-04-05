@@ -4,6 +4,8 @@
 - do not colorize `tree` output because a pager application might not handle it
   well
 - do not suggest using `more` program in the readme
+- invoke `less` pager command in a subshell so that unsetting environment
+  variable via `LESS=` works in any shell
 
 ### v0.7.0, Sep 05, 2014
 - bugfix: invalid params for 'save_sidebar_width' script
