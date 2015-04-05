@@ -1,6 +1,8 @@
 # Changelog
 
 ### master
+
+### v0.8.0, Apr 05, 2015
 - do not colorize `tree` output because a pager application might not handle it
   well
 - do not suggest using `more` program in the readme
