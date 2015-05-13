@@ -90,6 +90,15 @@ default!
 
     set -g @sidebar-tree-width '60'
 
+> Can I colorize the ``tree`` directory listing in the sidebar?
+
+    set -g @sidebar-tree-command 'tree -C'
+
+>  Bear in mind that the command used to page the directory listing
+(``@sidebar-tree-pager``, if set) must support color codes. If it does not,
+unusual characters - the color control codes - will be visible in the
+sidebar.
+
 ### Other goodies
 
 - [tmux-copycat](https://github.com/tmux-plugins/tmux-copycat) - a plugin for
