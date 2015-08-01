@@ -34,10 +34,7 @@ Requirements: `tmux 1.9` or higher, `tree` recommended but not required
 
 Add plugin to the list of TPM plugins in `.tmux.conf`:
 
-    set -g @tpm_plugins '          \
-      tmux-plugins/tpm             \
-      tmux-plugins/tmux-sidebar    \
-    '
+    set -g @plugin 'tmux-plugins/tmux-sidebar'
 
 Hit `prefix + I` to fetch the plugin and source it. You should now be able to
 use the plugin.
