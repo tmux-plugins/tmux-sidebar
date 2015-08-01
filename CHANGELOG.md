@@ -1,6 +1,7 @@
 # Changelog
 
 ### master
+- move customization options to a separate docs document
 
 ### v0.8.0, Apr 05, 2015
 - do not colorize `tree` output because a pager application might not handle it
