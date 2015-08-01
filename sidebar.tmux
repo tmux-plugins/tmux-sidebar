@@ -1,10 +1,11 @@
 #!/usr/bin/env bash
 
 CURRENT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+SCRIPTS_DIR="$CURRENT_DIR/scripts"
 
-source "$CURRENT_DIR/scripts/helpers.sh"
-source "$CURRENT_DIR/scripts/variables.sh"
-source "$CURRENT_DIR/scripts/tree_helpers.sh"
+source "$SCRIPTS_DIR/helpers.sh"
+source "$SCRIPTS_DIR/variables.sh"
+source "$SCRIPTS_DIR/tree_helpers.sh"
 
 set_default_key_binding_options() {
 	local tree_command="$(tree_command)"
@@ -26,7 +27,7 @@ set_key_bindings() {
 	for option in $stored_key_vars; do
 		key="$(get_key_from_option_name "$option")"
 		value="$(get_value_from_option_name "$option")"
-		tmux bind-key "$key" run-shell "$CURRENT_DIR/scripts/toggle.sh '$value' '#{pane_id}'"
+		tmux bind-key "$key" run-shell "$SCRIPTS_DIR/toggle.sh '$value' '#{pane_id}'"
 	done
 }
 
