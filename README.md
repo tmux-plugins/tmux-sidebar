@@ -25,6 +25,8 @@ thing manually each time:
 
 Requirements: `tmux 1.9` or higher, `tree` recommended but not required
 
+Tested and working on Linux, OSX and Cygwin.
+
 ### Key bindings
 
 - `prefix + Tab` - toggle sidebar with a directory tree
