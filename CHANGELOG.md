@@ -2,6 +2,7 @@
 
 ### master
 - move customization options to a separate docs document
+- sidebar size bugfix for tmux 2.1 and above
 
 ### v0.8.0, Apr 05, 2015
 - do not colorize `tree` output because a pager application might not handle it

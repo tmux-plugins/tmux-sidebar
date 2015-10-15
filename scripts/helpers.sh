@@ -85,3 +85,17 @@ width_from_sidebar_file() {
 	grep "^${pane_current_path}\t" $(sidebar_file) |
 		cut -f2
 }
+
+# function is used to get "clean" integer version number. Examples:
+# `tmux 1.9` => `19`
+# `1.9a`     => `19`
+_get_digits_from_string() {
+	local string="$1"
+	local only_digits="$(echo "$string" | tr -dC '[:digit:]')"
+	echo "$only_digits"
+}
+
+tmux_version_int() {
+	local tmux_version_string=$(tmux -V)
+	echo "$(_get_digits_from_string "$tmux_version_string")"
+}

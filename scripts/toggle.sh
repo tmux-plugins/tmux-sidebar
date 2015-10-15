@@ -123,11 +123,18 @@ desired_sidebar_size() {
 	fi
 }
 
+# tmux version 2.0 and below requires different argument for `join-pane`
+use_inverted_size() {
+	[ tmux_version_int -le 20 ]
+}
+
 split_sidebar_left() {
 	local sidebar_size=$(desired_sidebar_size)
-	local inverted_size=$((PANE_WIDTH - $sidebar_size - 1))
+	if use_inverted_size; then
+		sidebar_size=$((PANE_WIDTH - $sidebar_size - 1))
+	fi
 	local sidebar_id="$(tmux new-window -c "$PANE_CURRENT_PATH" -P -F "#{pane_id}" "$COMMAND")"
-	tmux join-pane -hb -l "$inverted_size" -t "$PANE_ID" -s "$sidebar_id"
+	tmux join-pane -hb -l "$sidebar_size" -t "$PANE_ID" -s "$sidebar_id"
 	echo "$sidebar_id"
 }
 
