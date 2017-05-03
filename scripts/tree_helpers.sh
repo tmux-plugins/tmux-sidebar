@@ -33,6 +33,10 @@ tree_pager() {
 	get_tmux_option "$TREE_PAGER_OPTION" "$TREE_PAGER"
 }
 
+tree_usepager() {
+	get_tmux_option "$TREE_USEPAGER_OPTION" "$TREE_USEPAGER"
+}
+
 tree_position() {
 	get_tmux_option "$TREE_POSITION_OPTION" "$TREE_POSITION"
 }
