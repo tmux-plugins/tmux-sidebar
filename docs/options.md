@@ -33,6 +33,10 @@ default!
 
     set -g @sidebar-tree-command 'tree -C'
 
+> Can I disable the pager in the sidebar?
+
+    set -g @sidebar-tree-usepager off
+
 ### Notes
 
 The command used to display the directory listing
