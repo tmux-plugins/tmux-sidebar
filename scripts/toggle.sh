@@ -125,7 +125,7 @@ desired_sidebar_size() {
 
 # tmux version 2.0 and below requires different argument for `join-pane`
 use_inverted_size() {
-	[ tmux_version_int -le 20 ]
+	[ $(tmux_version_int) -le 20 ]
 }
 
 split_sidebar_left() {
