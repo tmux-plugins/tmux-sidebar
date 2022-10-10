@@ -23,4 +23,4 @@ TREE_WIDTH_OPTION="@sidebar-tree-width"
 
 SUPPORTED_TMUX_VERSION="1.9"
 
-SIDEBAR_DIR="$HOME/.tmux/sidebar"
+SIDEBAR_DIR="$XDG_STATE_HOME/tmux/tmux-sidebar"
